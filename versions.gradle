@@ -1,0 +1,16 @@
+ext {
+    versions = [
+
+            compileSdk     : 29,
+            minSdk         : 24,
+            targetSdk      : 30,
+            versionCode    : 1,
+            versionName    : "0",
+
+            kotlin         : '1.4.10',
+            ktx            : '1.3.2',
+
+            retrofit       : '2.3.0',
+            glide          : '4.10.0'
+    ]
+}
