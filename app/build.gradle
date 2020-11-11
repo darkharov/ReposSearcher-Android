@@ -37,9 +37,19 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
-    implementation "androidx.core:core-ktx:$versions.ktx"
 
+    // Standard Libs
     implementation "androidx.appcompat:appcompat:1.2.0"
     implementation "com.google.android.material:material:1.2.1"
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+
+    // Ktx
+    implementation "androidx.core:core-ktx:$versions.ktx"
+    implementation "androidx.activity:activity-ktx:1.1.0"
+
+    // Networking
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    implementation "com.google.code.gson:gson:2.8.6"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
 }

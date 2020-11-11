@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Wide"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/WeightedHorizontally.Wrapped"
+        android:textSize="18sp"
+        tools:text="Name" />
+
+    <TextView
+        android:id="@+id/stars"
+        style="@style/Wrapped"
+        android:gravity="center_vertical"
+        app:drawableEndCompat="@drawable/ic_star"
+        tools:text="42" />
+
+</LinearLayout>
