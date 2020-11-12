@@ -14,12 +14,16 @@ data class ReposSearchResponse(
 )
 
 
-data class SearchResult(
+data class RepoSearchResult(
     val query: String,
     val repos: List<Repo>
 ) {
+
+    val nothingFound get() = query.isNotBlank() && repos.isEmpty()
+
+
     companion object {
-        val EMPTY = SearchResult(
+        val EMPTY = RepoSearchResult(
             query = "",
             repos = emptyList()
         )

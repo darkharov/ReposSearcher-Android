@@ -35,7 +35,7 @@ class ReposSearchUseCase(
     private fun emitEmptyResult() {
         listener.onNextState(
             LoadingState.Completed(
-                SearchResult.EMPTY
+                RepoSearchResult.EMPTY
             )
         )
     }
@@ -82,7 +82,7 @@ class ReposSearchUseCase(
         if (completedRequestsCount == searchThreads.size) {
 
             val sorted = results.toList().sortedByDescending(Repo::stars)
-            val result = SearchResult(query, sorted)
+            val result = RepoSearchResult(query, sorted)
 
             val state = LoadingState.Completed(result)
 
@@ -90,7 +90,7 @@ class ReposSearchUseCase(
         }
     }
 
-    private fun tryToFinish(state: LoadingState<SearchResult>) {
+    private fun tryToFinish(state: LoadingState<RepoSearchResult>) {
         doIfNotFinished {
             listener.onNextState(state)
             finished = true
@@ -138,6 +138,6 @@ class ReposSearchUseCase(
 
 
     interface Listener {
-        fun onNextState(state: LoadingState<SearchResult>)
+        fun onNextState(state: LoadingState<RepoSearchResult>)
     }
 }

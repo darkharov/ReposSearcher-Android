@@ -61,26 +61,15 @@ class SearchActivity : AppCompatActivity() {
         viewModel.state.observe(this) { state ->
 
             message.text = computeMessage(state)
+
+            updateSearchResults(state)
+
             progressBar.isVisible = state is LoadingState.Started
-
-            when (state) {
-                is LoadingState.Completed -> {
-                    reposAdapter.list = state.data.repos
-                    recyclerView.isVisible = true
-                    recyclerView.scrollToPosition(0)
-                }
-                is LoadingState.Fail -> {
-                    reposAdapter.list = emptyList()
-                    recyclerView.isVisible = false
-                }
-                else -> Unit
-            }
-
             tryAgainButton.isVisible = state is LoadingState.Fail
         }
     }
 
-    private fun computeMessage(state: LoadingState<SearchResult>?) =
+    private fun computeMessage(state: LoadingState<RepoSearchResult>?) =
         when (state) {
             is LoadingState.Started -> null
             is LoadingState.Fail -> state.errorMessage(this)
@@ -88,14 +77,27 @@ class SearchActivity : AppCompatActivity() {
             else -> null
         }
 
-    private fun nothingFoundOrNull(state: LoadingState.Completed<SearchResult>) =
+    private fun nothingFoundOrNull(state: LoadingState.Completed<RepoSearchResult>) =
         when {
-            nothingFound(state) -> getString(R.string.nothing_found)
+            state.data.nothingFound -> getString(R.string.nothing_found)
             else -> null
         }
 
-    private fun nothingFound(state: LoadingState.Completed<SearchResult>) =
-        state.data.query.isNotEmpty() && state.data.repos.isEmpty()
+
+    private fun updateSearchResults(state: LoadingState<RepoSearchResult>?) {
+        when (state) {
+            is LoadingState.Completed -> {
+                reposAdapter.list = state.data.repos
+                recyclerView.isVisible = true
+                recyclerView.scrollToPosition(0)
+            }
+            is LoadingState.Fail -> {
+                reposAdapter.list = emptyList()
+                recyclerView.isVisible = false
+            }
+            else -> Unit
+        }
+    }
 
 
     private inner class ReposAdapter : RecyclerView.Adapter<ReposAdapter.ViewHolder>() {

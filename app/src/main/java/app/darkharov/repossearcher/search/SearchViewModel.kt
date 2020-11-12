@@ -9,7 +9,7 @@ class SearchViewModel : ViewModel() {
 
     private lateinit var reposSearch: ReposSearchUseCase
 
-    val state = MutableLiveData<LoadingState<SearchResult>>()
+    val state = MutableLiveData<LoadingState<RepoSearchResult>>()
 
     fun processSearchQuery(query: String) {
         if (newSearchRequestNeeded(query)) {
@@ -45,7 +45,7 @@ class SearchViewModel : ViewModel() {
 
     private inner class ReposSearchListenerImpl : ReposSearchUseCase.Listener {
 
-        override fun onNextState(state: LoadingState<SearchResult>) {
+        override fun onNextState(state: LoadingState<RepoSearchResult>) {
             this@SearchViewModel.state.postValue(state)
         }
     }
