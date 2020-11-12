@@ -12,6 +12,12 @@ object ApiFactory {
 
     private const val timeout = 30L
 
+    inline fun <reified API : Any> create(baseUrl: String): API =
+        builder()
+            .baseUrl(baseUrl)
+            .build()
+            .create(API::class.java)
+
     fun builder() =
         provideRetrofitBuilder(
             provideOkHttpClient(
@@ -42,10 +48,4 @@ object ApiFactory {
         Retrofit.Builder()
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
-
-    inline fun <reified API : Any> create(baseUrl: String): API =
-        builder()
-            .baseUrl(baseUrl)
-            .build()
-            .create(API::class.java)
 }
