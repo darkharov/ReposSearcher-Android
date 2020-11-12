@@ -12,26 +12,24 @@ class SearchViewModel : ViewModel() {
     val state = MutableLiveData<LoadingState<SearchResult>>()
 
     fun processSearchQuery(query: String) {
-        if (query.isBlank()) {
-            state.value = LoadingState.Completed(SearchResult.EMPTY)
-        } else {
+        if (newSearchRequestNeeded(query)) {
             startSearch(query)
         }
     }
 
+    private fun newSearchRequestNeeded(newQuery: String) =
+        !(::reposSearch.isInitialized)
+                || (reposSearch.query != newQuery)
+                || (state.value is LoadingState.Fail)
+
     private fun startSearch(query: String) {
-        state.value.let { state ->
 
-            if (state !is LoadingState.Completed || state.data.query != query) {
-
-                if (::reposSearch.isInitialized) {
-                    reposSearch.cancel()
-                }
-
-                reposSearch = createReposSearchUseCase(query)
-                reposSearch.perform()
-            }
+        if (::reposSearch.isInitialized) {
+            reposSearch.cancel()
         }
+
+        reposSearch = createReposSearchUseCase(query)
+        reposSearch.perform()
     }
 
     private fun createReposSearchUseCase(query: String) =

@@ -5,7 +5,7 @@ import java.lang.Exception
 
 class ReposSearchUseCase(
     private val api: SearchApi,
-    private val query: String,
+    val query: String,
     private val pageSize: Int,
     private val concurrency: Int,
     private val delayMillis: Long,
@@ -23,10 +23,27 @@ class ReposSearchUseCase(
 
     fun perform() {
         Thread {
-            listener.onNextState(LoadingState.Started())
-            Thread.sleep(delayMillis)
-            startThreads()
+
+            when {
+                query.isBlank() -> emitEmptyResult()
+                else -> startSearch()
+            }
+
         }.start()
+    }
+
+    private fun emitEmptyResult() {
+        listener.onNextState(
+            LoadingState.Completed(
+                SearchResult.EMPTY
+            )
+        )
+    }
+
+    private fun startSearch() {
+        listener.onNextState(LoadingState.Started())
+        Thread.sleep(delayMillis)
+        startThreads()
     }
 
     private fun startThreads() {
