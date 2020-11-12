@@ -3,7 +3,7 @@ package app.darkharov.repossearcher.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import app.darkharov.repossearcher.commons.LoadingState
-import app.darkharov.repossearcher.commons.RetrofitBuilderFactory
+import app.darkharov.repossearcher.commons.ApiFactory
 
 class SearchViewModel : ViewModel() {
 
@@ -34,7 +34,7 @@ class SearchViewModel : ViewModel() {
 
     private fun createReposSearchUseCase(query: String) =
         ReposSearchUseCase(
-            api = RetrofitBuilderFactory.api("https://api.github.com"),
+            api = ApiFactory.create("https://api.github.com"),
             query = query,
             pageSize = 15,
             concurrency = 2,

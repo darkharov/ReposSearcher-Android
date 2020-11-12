@@ -8,19 +8,17 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object RetrofitBuilderFactory {
+object ApiFactory {
 
     private const val timeout = 30L
 
-    fun builder(): Retrofit.Builder {
-
-        val logger = provideLoggingInterceptor()
-
-        val okHttpClient = provideOkHttpClient(logger)
-        val gson = provideGson()
-
-        return provideRetrofitBuilder(okHttpClient, gson)
-    }
+    fun builder() =
+        provideRetrofitBuilder(
+            provideOkHttpClient(
+                provideLoggingInterceptor()
+            ),
+            provideGson()
+        )
 
     private fun provideLoggingInterceptor() =
         HttpLoggingInterceptor().apply {
@@ -45,7 +43,7 @@ object RetrofitBuilderFactory {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
 
-    inline fun <reified API : Any> api(baseUrl: String): API =
+    inline fun <reified API : Any> create(baseUrl: String): API =
         builder()
             .baseUrl(baseUrl)
             .build()
