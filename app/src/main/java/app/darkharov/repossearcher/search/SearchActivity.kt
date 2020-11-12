@@ -39,27 +39,22 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        initSearchInput()
-
-        clear.setOnClickListener {
-            searchInput.text = null
-        }
 
         recyclerView.adapter = reposAdapter
+
+        searchInput.addTextChangedListener(
+            afterTextChanged = {
+                performSearchQuery()
+            }
+        )
+
+        clear.setOnClickListener { searchInput.text = null }
         tryAgainButton.setOnClickListener { performSearchQuery() }
     }
 
     private fun performSearchQuery() {
         val query = searchInput.text?.toString().orEmpty().trim()
         viewModel.processSearchQuery(query)
-    }
-
-    private fun initSearchInput() {
-        searchInput.addTextChangedListener(
-            afterTextChanged = {
-                performSearchQuery()
-            }
-        )
     }
 
     private fun observeStateChanges() {
